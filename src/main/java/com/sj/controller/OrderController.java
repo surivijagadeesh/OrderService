@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sj.Model.OrderResponse;
 import com.sj.entity.Order;
 import com.sj.service.OrderService;
 
 @RestController
-@RequestMapping("/api")
+
 public class OrderController {
 	
 	@Autowired
@@ -32,15 +33,18 @@ public class OrderController {
 	}
 	
 	@GetMapping("/getOrdersbyID/{id}")
-	public ResponseEntity<Order> getOrdersById(@PathVariable("id") Long id){
-		Order orderData=orderService.getOrdersById(id);
-		return new ResponseEntity<Order>(orderData,HttpStatus.OK);
+	public ResponseEntity<OrderResponse> getOrdersById(@PathVariable("id") Long id){
+		OrderResponse orderData = orderService.getOrdersById(id);
+		return new ResponseEntity<OrderResponse>(orderData,HttpStatus.OK);
 	}
-	@GetMapping("/getOrders")
-	public ResponseEntity<List<Order>> getOrders(){
-		List<Order> orderData=orderService.getOrders();
-		return new ResponseEntity<List<Order>>(orderData,HttpStatus.OK);
-	}
+	 @GetMapping("/getOrders")
+	    public ResponseEntity<List<OrderResponse>> getOrders() {
+	        // Use the service to get the list of OrderResponse
+	        List<OrderResponse> orderData = orderService.getOrders();
+
+	        // Return the list of OrderResponse wrapped in ResponseEntity
+	        return new ResponseEntity<>(orderData, HttpStatus.OK);
+	    }
 	
 	@PutMapping("/updateOrder/{id}")
 	public ResponseEntity<Order> updateOrder(@PathVariable("id") Long id, @RequestBody Order request){

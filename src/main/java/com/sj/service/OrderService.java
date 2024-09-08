@@ -2,15 +2,16 @@ package com.sj.service;
 
 import java.util.List;
 
+import com.sj.Model.OrderResponse;
 import com.sj.entity.Order;
 
 public interface OrderService {
 
 	Order createData(Order order);
 
-	Order getOrdersById(Long id);
+	OrderResponse getOrdersById(Long id);
 
-	List<Order> getOrders();
+	List<OrderResponse> getOrders();
 
 	Order updateOrder(Long id, Order request);
 

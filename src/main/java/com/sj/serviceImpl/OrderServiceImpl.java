@@ -2,11 +2,14 @@ package com.sj.serviceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.sj.Model.OrderResponse;
 import com.sj.entity.Order;
 import com.sj.exception.CustomException;
 import com.sj.repository.OrderRepository;
@@ -17,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderRepository repository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public Order createData(Order order) {
@@ -30,17 +36,27 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order getOrdersById(Long id) {
-		Order orderData = repository.findById(id)
-				.orElseThrow(() -> new CustomException("PRODUCT_NOT_FOUND", "Product not found with id: " + id, HttpStatus.NOT_FOUND.value()));
-		return orderData;	
-	}
+	public OrderResponse getOrdersById(Long id) {
+		
+        // Fetch the Order entity from the repository
+        Order order = repository.findById(id).get(); 
+        OrderResponse orderResponse=modelMapper.map(order,OrderResponse.class);
+        
+        return orderResponse;
+        // Convert Order entity to OrderResponse model
+       // return OrderResponse.fromEntity(orderData);
+    }
 
-	@Override
-	public List<Order> getOrders() {
-		// TODO Auto-generated method stub
-		return repository.findAll();
-	}
+	 @Override
+	 public List<OrderResponse> getOrders() {
+	        // Fetch list of Order entities from the repository
+	        List<Order> orderData = repository.findAll();
+
+	        // Convert list of Order entities to list of OrderResponse
+	        return orderData.stream()
+	                .map(order -> modelMapper.map(order, OrderResponse.class))
+	                .collect(Collectors.toList());
+	    }
 
 	@Override
 	public Order updateOrder(Long id, Order request) {
