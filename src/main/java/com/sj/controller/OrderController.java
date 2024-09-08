@@ -28,8 +28,7 @@ public class OrderController {
 	@PostMapping("/createData")
 	public ResponseEntity<Order> createData (@RequestBody Order order) {
 		Order orderData=orderService.createData(order);
-		return new ResponseEntity<Order>(orderData,HttpStatus.CREATED);
-		
+		return new ResponseEntity<Order>(orderData,HttpStatus.CREATED);	
 	}
 	
 	@GetMapping("/getOrdersbyID/{id}")
@@ -57,8 +56,5 @@ public class OrderController {
 		Order orderData=orderService.updateOrderPatch(id,request);
 		return new ResponseEntity<Order>(orderData,HttpStatus.CREATED);
 	}
-	
-	
-	
-	
+		
 }
